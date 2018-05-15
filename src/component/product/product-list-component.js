@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import ProductRow from "./product-component";
 import {
   fetchProducts,
@@ -8,16 +9,15 @@ import {
 } from "../../store/actions/actionCreator";
 
 class ProdutListComponent extends Component {
-  componentWillMount() {
+  constructor(props) {
+    super(props);
     this.props.fetchProducts();
+    this.delete = this.delete.bind(this);
   }
 
   delete(id) {
     const prodId = id;
     this.props.deleteProduct(prodId);
-    this.setState({
-      allProducts: this.props.allProducts
-    });
   }
 
   render() {
@@ -26,7 +26,7 @@ class ProdutListComponent extends Component {
         <ProductRow
           key={product.id}
           data={product}
-          deleteProduct={this.delete.bind(this)}
+          deleteProduct={this.delete}
         />
       );
     });
@@ -57,6 +57,15 @@ const mapStateToProps = state => ({
   allProducts: state.productOps.products
 });
 
-export default connect(mapStateToProps, { fetchProducts, deleteProduct })(
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      fetchProducts,
+      deleteProduct
+    },
+    dispatch
+  );
+
+export default connect(mapStateToProps, mapDispatchToProps)(
   ProdutListComponent
 );

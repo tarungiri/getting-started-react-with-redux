@@ -1,6 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import {
   fetchProduct,
   saveProduct,
@@ -9,9 +10,8 @@ import {
 import uuid from "uuid/v4";
 
 class ManageProductComponent extends React.Component {
-  constructor() {
-    super();
-    debugger;
+  constructor(props) {
+    super(props);
     this.state = {
       id: "",
       productName: "",
@@ -19,9 +19,10 @@ class ManageProductComponent extends React.Component {
       isSave: false,
       isNew: true
     };
+    this.fetchProductForEdit = this.fetchProductForEdit(this);
   }
 
-  componentWillMount() {
+  fetchProductForEdit() {
     const prodId = this.props.match.params.id;
     if (!!prodId) {
       this.props.fetchProduct(prodId);
@@ -137,8 +138,16 @@ const mapStateToProps = state => ({
   product: state.productOps.product
 });
 
-export default connect(mapStateToProps, {
-  fetchProduct,
-  saveProduct,
-  updateProduct
-})(ManageProductComponent);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      fetchProduct,
+      saveProduct,
+      updateProduct
+    },
+    dispatch
+  );
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  ManageProductComponent
+);

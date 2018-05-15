@@ -10,13 +10,13 @@ const productReducers = (state = initialState, action) => {
     case actionTypes.FETCH_PRODUCTS: {
       return {
         ...state,
-        products: action.payload
+        products: [...action.payload]
       };
     }
     case actionTypes.FETCH_PRODUCT_BY_ID: {
       return {
         ...state,
-        product: action.payload
+        product: { ...action.payload }
       };
     }
     case actionTypes.ADD_PRODUCT: {
@@ -26,7 +26,10 @@ const productReducers = (state = initialState, action) => {
       return state;
     }
     case actionTypes.DELETE_PRODUCT: {
-      return state;
+      return {
+        ...state,
+        products: [...action.payload]
+      };
     }
     default: {
       return state;

@@ -1,40 +1,49 @@
 import * as actionTypes from "./actions";
 import productAPI from "../../api/products-data";
 
-export const fetchProducts = () => dispatch => {
-  const allProducts = productAPI().getAllProducts;
-  dispatch({
+export const fetchProducts = () => {
+  return {
     type: actionTypes.FETCH_PRODUCTS,
-    payload: allProducts
-  });
+    payload: productAPI().getAllProducts()
+  };
 };
 
-export const fetchProduct = pid => dispatch => {
-  debugger;
-  const product = productAPI().getProductById(pid);
-  dispatch({
+// var fetchProduct = function fetchProduct(pid) {
+//   return function (dispatch) {
+//     var product = Object(__WEBPACK_IMPORTED_MODULE_1__api_products_data__["a" /* default */])().getProductById(pid);
+//     dispatch{
+//       type: __WEBPACK_IMPORTED_MODULE_0__actions__["d" /* FETCH_PRODUCT_BY_ID */],
+//       payload: product
+//     });
+//   };
+// };
+
+export const fetchProduct = pid => {
+  return {
     type: actionTypes.FETCH_PRODUCT_BY_ID,
-    payload: product
-  });
+    payload: productAPI().getProductById(pid)
+  };
 };
 
-export const saveProduct = product => dispatch => {
+export const saveProduct = product => {
   productAPI().saveProduct(product);
-  dispatch({
+  return {
     type: actionTypes.ADD_PRODUCT
-  });
+  };
 };
 
-export const updateProduct = product => dispatch => {
+export const updateProduct = product => {
   productAPI().updateProduct(product);
-  dispatch({
+  return {
     type: actionTypes.UPDATE_PRODUCT
-  });
+  };
 };
 
-export const deleteProduct = pid => dispatch => {
+export const deleteProduct = pid => {
   productAPI().deleteProduct(pid);
-  dispatch({
-    type: actionTypes.DELETE_PRODUCT
-  });
+
+  return {
+    type: actionTypes.DELETE_PRODUCT,
+    payload: productAPI().getAllProducts()
+  };
 };

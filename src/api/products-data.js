@@ -19,27 +19,37 @@ const defaultProducts = [
 ];
 let products = defaultProducts;
 let productAPI = function() {
+  let getAllProducts = () => {
+    return products;
+  };
+  let getProductById = pid => {
+    return products.find(element => {
+      return element.id === pid;
+    });
+  };
+
+  let saveProduct = product => {
+    products.push(product);
+  };
+
+  let updateProduct = product => {
+    Object.assign(
+      products,
+      products.map(el => (el.id === product.id ? product : el))
+    );
+  };
+
+  let deleteProduct = pid => {
+    let foundIndex = products.findIndex(element => element.id === pid);
+    products.splice(foundIndex, 1);
+  };
+
   return {
-    getAllProducts: products,
-    getProductById: function(pid) {
-      return products.find(element => {
-        return element.id === pid;
-      });
-    },
-    saveProduct: function(product) {
-      debugger;
-      products.push(product);
-    },
-    updateProduct: function(product) {
-      Object.assign(
-        products,
-        products.map(el => (el.id === product.id ? product : el))
-      );
-    },
-    deleteProduct: function(pid) {
-      let foundIndex = products.findIndex(element => element.id === pid);
-      products.splice(foundIndex, 1);
-    }
+    getAllProducts: getAllProducts,
+    getProductById: getProductById,
+    saveProduct: saveProduct,
+    updateProduct: updateProduct,
+    deleteProduct: deleteProduct
   };
 };
 
